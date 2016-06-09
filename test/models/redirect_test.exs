@@ -15,13 +15,6 @@ defmodule Extemporize.RedirectTest do
     assert changeset.valid?
   end
 
-  test "changeset without required fields" do
-    for attr <- [:destination, :pattern] do
-      changeset = Redirect.changeset(%Redirect{}, Map.delete(@valid_attrs, attr))
-      refute changeset.valid?
-    end
-  end
-
   test "string fields gets whitespace stripped" do
     for attr <- [:pattern, :destination] do
       value = Map.get(@valid_attrs, attr) <> " "
@@ -30,9 +23,22 @@ defmodule Extemporize.RedirectTest do
     end
   end
 
+  test "changeset without required fields" do
+    for attr <- [:destination, :pattern] do
+      changeset = Redirect.changeset(%Redirect{}, Map.delete(@valid_attrs, attr))
+      refute changeset.valid?
+    end
+  end
+
   test "changeset with duplicate pattern" do
     Repo.insert! Redirect.changeset(%Redirect{}, @valid_attrs)
     {result, _} = Repo.insert Redirect.changeset(%Redirect{}, @valid_attrs)
     assert result == :error
+  end
+
+  test "match query is correct" do
+    inserted = Repo.insert! Redirect.changeset(%Redirect{}, @valid_attrs)
+    result = Redirect.match("some content") |> Repo.one
+    assert result.destination == inserted.destination
   end
 end
