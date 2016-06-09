@@ -63,8 +63,8 @@ defmodule Extemporize.RedirectController do
     |> redirect(to: redirect_path(conn, :index))
   end
 
-  def match(conn, %{"pattern" => pattern}) do
-    redirect = Redirect.match(pattern) |> Repo.one
+  def match(conn, %{"domain" => domain, "path" => path}) do
+    redirect = Redirect.match(domain, path) |> Repo.one
     if redirect do
       send_resp(conn, 200, redirect.destination)
     else
@@ -72,6 +72,6 @@ defmodule Extemporize.RedirectController do
     end
   end
 
-  # Return 404 if match dosen't have a pattern param
+  # Return 404 if match dosen't have a path param
   def match(conn, _), do: send_resp(conn, 404, "")
 end

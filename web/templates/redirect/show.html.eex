@@ -3,8 +3,8 @@
 <ul>
 
   <li>
-    <strong>Pattern:</strong>
-    <%= @redirect.pattern %>
+    <strong>path:</strong>
+    <%= @redirect.path %>
   </li>
 
   <li>

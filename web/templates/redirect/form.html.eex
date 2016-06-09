@@ -6,9 +6,15 @@
   <% end %>
 
   <div class="form-group">
-    <%= label f, :pattern, class: "control-label" %>
-    <%= text_input f, :pattern, class: "form-control" %>
-    <%= error_tag f, :pattern %>
+    <%= label f, :domain, class: "control-label" %>
+    <%= text_input f, :domain, class: "form-control" %>
+    <%= error_tag f, :domain %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :path, class: "control-label" %>
+    <%= text_input f, :path, class: "form-control" %>
+    <%= error_tag f, :path %>
   </div>
 
   <div class="form-group">

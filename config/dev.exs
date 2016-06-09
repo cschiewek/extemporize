@@ -18,7 +18,7 @@ config :extemporize, Extemporize.Endpoint,
 # Watch static and templates for browser reloading.
 config :extemporize, Extemporize.Endpoint,
   live_reload: [
-    patterns: [
+    paths: [
       ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
       ~r{priv/gettext/.*(po)$},
       ~r{web/views/.*(ex)$},

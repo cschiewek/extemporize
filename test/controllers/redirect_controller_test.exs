@@ -2,7 +2,7 @@ defmodule Extemporize.RedirectControllerTest do
   use Extemporize.ConnCase
 
   alias Extemporize.Redirect
-  @valid_attrs %{destination: "some content", pattern: "some content"}
+  @valid_attrs %{domain: "localhost.com", path: "/lol", destination: "/rofl"}
   @invalid_attrs %{}
 
   test "lists all entries on index", %{conn: conn} do
@@ -64,19 +64,19 @@ defmodule Extemporize.RedirectControllerTest do
     refute Repo.get(Redirect, redirect.id)
   end
 
-  test "match without a pattern param", %{conn: conn} do
+  test "match without a path param", %{conn: conn} do
     conn = get conn, redirect_path(conn, :match)
     assert response(conn, 404) =~ ""
   end
 
-  test "match with an unmatched pattern", %{conn: conn} do
-    conn = get conn, redirect_path(conn, :match, %{pattern: "this won't match"})
+  test "match with an unmatched path", %{conn: conn} do
+    conn = get conn, redirect_path(conn, :match, %{path: "this won't match"})
     assert response(conn, 404) =~ ""
   end
 
-  test "match with a matching pattern returns the destination", %{conn: conn} do
-    redirect = %Redirect{pattern: "lol", destination: "rofl"} |> Repo.insert!
-    conn = get conn, redirect_path(conn, :match, %{pattern: "lol"})
+  test "match with a matching path returns the destination", %{conn: conn} do
+    redirect = %Redirect{domain: "localhost.com", path: "/lol", destination: "/rofl"} |> Repo.insert!
+    conn = get conn, redirect_path(conn, :match, %{domain: "localhost.com", path: "/lol"})
     assert response(conn, 200) =~ redirect.destination
   end
 end

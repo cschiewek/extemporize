@@ -3,7 +3,8 @@
 <table class="table">
   <thead>
     <tr>
-      <th>Pattern</th>
+      <th>Domain</th>
+      <th>Path</th>
       <th>Destination</th>
 
       <th></th>
@@ -12,7 +13,8 @@
   <tbody>
 <%= for redirect <- @redirects do %>
     <tr>
-      <td><%= redirect.pattern %></td>
+      <td><%= redirect.domain %></td>
+      <td><%= redirect.path %></td>
       <td><%= redirect.destination %></td>
 
       <td class="text-right">

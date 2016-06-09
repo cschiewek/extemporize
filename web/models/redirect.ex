@@ -2,7 +2,8 @@ defmodule Extemporize.Redirect do
   use Extemporize.Web, :model
 
   schema "redirects" do
-    field :pattern, :string
+    field :domain, :string
+    field :path, :string
     field :destination, :string
 
     timestamps
@@ -13,14 +14,17 @@ defmodule Extemporize.Redirect do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:pattern, :destination])
-    |> strip_whitespace([:pattern, :destination])
-    |> validate_required([:pattern, :destination])
-    |> unique_constraint(:pattern)
+    |> cast(params, [:domain, :path, :destination])
+    |> strip_whitespace([:domain, :path, :destination])
+    |> validate_required([:domain, :path, :destination])
+    |> unique_constraint(:domain, name: :redirects_domain_path_index)
   end
 
-  def match(query \\ __MODULE__, pattern) do
-    from r in query, select: [:destination], where: r.pattern == ^pattern
+  def match(domain, path) do
+    from r in __MODULE__,
+    select: [:destination],
+    where: r.domain == ^domain,
+    where: r.path == ^path
   end
 
   defp strip_whitespace(changeset, fields) when is_list(fields) do
