@@ -1,0 +1,7 @@
+/* This file is for your main application css. */
+
+/* padding for nav */
+body { padding-top: 60px; }
+
+/* Phoenix flash messages */
+.alert:empty { display: none; }

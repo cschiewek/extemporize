@@ -1,0 +1,6 @@
+<h2>Edit redirect</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: redirect_path(@conn, :update, @redirect) %>
+
+<%= link "Back", to: redirect_path(@conn, :index) %>

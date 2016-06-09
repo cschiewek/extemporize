@@ -1,0 +1,28 @@
+<h2>Listing redirects</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Pattern</th>
+      <th>Destination</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for redirect <- @redirects do %>
+    <tr>
+      <td><%= redirect.pattern %></td>
+      <td><%= redirect.destination %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: redirect_path(@conn, :show, redirect), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: redirect_path(@conn, :edit, redirect), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: redirect_path(@conn, :delete, redirect), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New redirect", to: redirect_path(@conn, :new) %>

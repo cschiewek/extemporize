@@ -1,0 +1,18 @@
+<h2>Show redirect</h2>
+
+<ul>
+
+  <li>
+    <strong>Pattern:</strong>
+    <%= @redirect.pattern %>
+  </li>
+
+  <li>
+    <strong>Destination:</strong>
+    <%= @redirect.destination %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: redirect_path(@conn, :edit, @redirect) %>
+<%= link "Back", to: redirect_path(@conn, :index) %>

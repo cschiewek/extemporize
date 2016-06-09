@@ -1,0 +1,1 @@
+alias Extemporize.{Repo, Redirect}
