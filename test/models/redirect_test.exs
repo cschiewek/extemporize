@@ -23,10 +23,10 @@ defmodule Extemporize.RedirectTest do
   end
 
   test "string fields gets whitespace stripped" do
-    for field <- [:pattern, :destination] do
-      value = Map.get(@valid_attrs, field) <> " "
-      changeset = Redirect.changeset(%Redirect{}, Map.put(@valid_attrs, field, value))
-      assert changeset |> Map.get(:changes) |> Map.get(field) == Map.get(@valid_attrs, field)
+    for attr <- [:pattern, :destination] do
+      value = Map.get(@valid_attrs, attr) <> " "
+      changeset = Redirect.changeset(%Redirect{}, Map.put(@valid_attrs, attr, value))
+      assert changeset |> Map.get(:changes) |> Map.get(attr) == Map.get(@valid_attrs, attr)
     end
   end
 
