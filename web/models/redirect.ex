@@ -20,6 +20,6 @@ defmodule Extemporize.Redirect do
   def match(query \\ __MODULE__, pattern) do
     from r in query,
     select: [:destination],
-    where: fragment("? ~* ?", r.pattern, ^pattern)
+    where: r.pattern == ^pattern
   end
 end
