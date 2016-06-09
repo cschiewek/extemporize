@@ -18,6 +18,7 @@ defmodule Extemporize.RedirectController do
 
     case Repo.insert(changeset) do
       {:ok, _redirect} ->
+        Redirect.Cache.update
         conn
         |> put_flash(:info, "Redirect created successfully.")
         |> redirect(to: redirect_path(conn, :index))
@@ -43,6 +44,7 @@ defmodule Extemporize.RedirectController do
 
     case Repo.update(changeset) do
       {:ok, redirect} ->
+        Redirect.Cache.update
         conn
         |> put_flash(:info, "Redirect updated successfully.")
         |> redirect(to: redirect_path(conn, :show, redirect))
@@ -57,6 +59,7 @@ defmodule Extemporize.RedirectController do
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
     Repo.delete!(redirect)
+    Redirect.Cache.update
 
     conn
     |> put_flash(:info, "Redirect deleted successfully.")
@@ -64,13 +67,12 @@ defmodule Extemporize.RedirectController do
   end
 
   def match(conn, %{"domain" => domain, "path" => path}) do
-    redirect = Redirect.match(domain, path) |> Repo.one
-    if redirect do
-      send_resp(conn, 200, redirect.destination)
-    else
-      send_resp(conn, 404, "")
-    end
+    redirect = Redirect.Cache.get(domain, path)
+    render_match(conn, redirect)
   end
+
+  defp render_match(conn, nil), do: send_resp(conn, 404, "")
+  defp render_match(conn, redirect), do: send_resp(conn, 200, redirect.destination)
 
   # Return 404 if match dosen't have a path param
   def match(conn, _), do: send_resp(conn, 404, "")

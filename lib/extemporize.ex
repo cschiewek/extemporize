@@ -14,6 +14,8 @@ defmodule Extemporize do
       supervisor(Extemporize.Endpoint, []),
       # Start your own worker by calling: Extemporize.Worker.start_link(arg1, arg2, arg3)
       # worker(Extemporize.Worker, [arg1, arg2, arg3]),
+      # Start the redirect cache
+      worker(Extemporize.Redirect.Cache, [])
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

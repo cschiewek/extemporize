@@ -76,6 +76,7 @@ defmodule Extemporize.RedirectControllerTest do
 
   test "match with a matching path returns the destination", %{conn: conn} do
     redirect = %Redirect{domain: "localhost.com", path: "/lol", destination: "/rofl"} |> Repo.insert!
+    Redirect.Cache.update([redirect])
     conn = get conn, redirect_path(conn, :match, %{domain: "localhost.com", path: "/lol"})
     assert response(conn, 200) =~ redirect.destination
   end

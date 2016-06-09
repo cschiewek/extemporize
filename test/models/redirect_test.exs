@@ -36,9 +36,8 @@ defmodule Extemporize.RedirectTest do
     assert result == :error
   end
 
-  test "match query is correct" do
-    inserted = Repo.insert! Redirect.changeset(%Redirect{}, @valid_attrs)
-    result = Redirect.match("localhost.com", "/lol") |> Repo.one
-    assert result.destination == inserted.destination
+  # TODO: improve tests
+  test "test cache module" do
+    assert Redirect.Cache.get == []
   end
 end

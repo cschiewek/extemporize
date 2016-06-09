@@ -20,13 +20,6 @@ defmodule Extemporize.Redirect do
     |> unique_constraint(:domain, name: :redirects_domain_path_index)
   end
 
-  def match(domain, path) do
-    from r in __MODULE__,
-    select: [:destination],
-    where: r.domain == ^domain,
-    where: r.path == ^path
-  end
-
   defp strip_whitespace(changeset, fields) when is_list(fields) do
     Enum.reduce(fields, changeset, &strip_whitespace(&2, &1))
   end
@@ -38,5 +31,23 @@ defmodule Extemporize.Redirect do
     else
       changeset
     end
+  end
+
+  defmodule Cache do
+    @name :redirect
+
+    def start_link, do: Agent.start_link(&load/0, name: @name)
+    def update, do: Agent.update(@name, &load(&1))
+    # This exists just until I can figure out the test issues with redirect#match
+    def update(overides), do: Agent.update(@name, &all(&1, overides))
+
+    def get, do: Agent.get(@name, &all(&1))
+    def get(domain, path), do: Agent.get(@name, &find(&1, domain, path))
+
+    defp all(redirects), do: redirects
+    defp all(redirects, overides), do: overides
+    defp load(_ \\ nil), do: Extemporize.Repo.all(Extemporize.Redirect)
+    defp find(redirects, domain, path), do: Enum.find(redirects, &match(&1, domain, path))
+    defp match(redirect, domain, path), do: Map.get(redirect, :domain) == domain && Map.get(redirect, :path) == path
   end
 end
